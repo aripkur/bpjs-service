@@ -17,13 +17,10 @@ class AuthController extends Controller
         $password = $request->header('x-password');
 
         if (!User::where(['username' => $username, 'password' => Hash::check('plain-text', $password)])->count()) {
-            return $this->bpjsResponse([], [
-                'message' => 'Akun tidak terdaftar',
-                'code' => 201,
-            ]);
+            return $this->bpjsResponse([], ['message' => 'Akun tidak terdaftar', 'code' => 201]);
         }
 
-        $key = env('HMAC_KEY', '<- [ R 4 H 4 S 1 4 ] ->');
+        $key = env('HMAC_KEY', '<- [ ubah saya di dot env ] ->');
         $time = Carbon::now();
         $hash = hash_hmac('sha256', $username . $time, $key, true);
         $token = base64_encode($hash);

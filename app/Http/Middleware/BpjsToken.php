@@ -23,15 +23,12 @@ class BpjsToken
         $reqToken = $request->header('x-token');
 
         $timeToken = User::where(['username' => $username])->value("token_updated");
-        $key = env('HMAC_KEY', '<- [ R 4 H 4 S 1 4 ] ->');
+        $key = env('HMAC_KEY', '<- [ ubah saya di dot env ] ->');
         $hash = hash_hmac('sha256', $username . $timeToken, $key, true);
         $token = base64_encode($hash);
 
         if ($token !== $reqToken) {
-            return $this->bpjsResponse([], [
-                'message' => 'Token expired',
-                'code' => 201,
-            ]);
+            return $this->bpjsResponse([], ['message' => 'Token expired', 'code' => 201]);
         }
 
         return $next($request);
