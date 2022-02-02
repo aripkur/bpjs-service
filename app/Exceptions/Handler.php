@@ -40,9 +40,7 @@ class Handler extends ExceptionHandler
             //
         });
         $this->renderable(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
-            if ($request->is('api/*')) {
-                return $this->response([], ['message' => 'URI tidak tersedia', 'code' => 201]);
-            }
+            return $this->response([], ['message' => 'URI tidak tersedia', 'code' => 201]);
         });
         $this->renderable(function (\Illuminate\Database\Eloquent\ModelNotFoundException $e, $request) {
             if ($request->is('api/*')) {

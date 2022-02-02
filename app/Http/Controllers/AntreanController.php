@@ -20,10 +20,10 @@ class AntreanController extends Controller
             ->get();
 
         if (!$data) {
-            return $this->response([], ['message' => 'Data tidak ditemukan', 'code' => 201]);
+            return $this->bpjsResponse([], ['message' => 'Data tidak ditemukan', 'code' => 201]);
         }
 
-        return $this->response([
+        return $this->bpjsResponse([
             "namapoli" => $data,
             "namadokter" => "Dr. Hendra",
             "totalantrean" => 25,
@@ -59,10 +59,10 @@ class AntreanController extends Controller
             ->get();
 
         if (!$data) {
-            return $this->response([], ['message' => 'Data tidak ditemukan', 'code' => 202]);
+            return $this->bpjsResponse([], ['message' => 'Data tidak ditemukan', 'code' => 202]);
         }
 
-        return $this->response([
+        return $this->bpjsResponse([
             "nomorantrean" => "A-12",
             "angkaantrean" => 12,
             "kodebooking" => "16032021A001",
@@ -91,10 +91,10 @@ class AntreanController extends Controller
             ->get();
 
         if (!$data) {
-            return $this->response([], ['message' => 'Data tidak ditemukan', 'code' => 201]);
+            return $this->bpjsResponse([], ['message' => 'Data tidak ditemukan', 'code' => 201]);
         }
 
-        return $this->response([
+        return $this->bpjsResponse([
             "nomorantrean" => "A20",
             "namapoli" => "Anak",
             "namadokter" => "Dr. Hendra",
@@ -119,10 +119,10 @@ class AntreanController extends Controller
             ->get();
 
         if (!$data) {
-            return $this->response([], ['message' => 'Data tidak ditemukan', 'code' => 201]);
+            return $this->bpjsResponse([], ['message' => 'Data tidak ditemukan', 'code' => 201]);
         }
 
-        return $this->response([], [
+        return $this->bpjsResponse([], [
             'message' => 'Ok',
             'code' => 200,
         ]);

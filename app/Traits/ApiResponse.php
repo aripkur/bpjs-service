@@ -2,10 +2,10 @@
 
 namespace App\Traits;
 
-trait BpjsResponse
+trait ApiResponse
 {
     // format response bpjs
-    protected function response(array $response, array $metadata)
+    protected function bpjsResponse(array $response, array $metadata)
     {
         return response()->json(
             [

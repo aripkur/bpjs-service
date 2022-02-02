@@ -17,23 +17,23 @@ class AuthController extends Controller
         $password = $request->header('x-password');
 
         if (!User::where(['username' => $username, 'password' => Hash::check('plain-text', $password)])->count()) {
-            $response = [];
-            $metadata = [
+            return $this->bpjsResponse([], [
                 'message' => 'Akun tidak terdaftar',
                 'code' => 201,
-            ];
-            return $this->response($response, $metadata);
+            ]);
         }
 
-        $token = Hash::make($username . $password . Carbon::now()->timestamp);
+        $key = env('HMAC_KEY', '<- [ R 4 H 4 S 1 4 ] ->');
+        $time = Carbon::now();
+        $hash = hash_hmac('sha256', $username . $time, $key, true);
+        $token = base64_encode($hash);
+        User::where('username', $username)->update(['token_updated' => $time]);
 
-        User::where('username', $username)->update(['token' => $token, 'token_updated' => Carbon::now()]);
-
-        $response = ['token' => $token];
-        $metadata = [
+        return $this->bpjsResponse([
+            'token' => $token,
+        ], [
             'message' => 'Ok',
             'code' => 200,
-        ];
-        return $this->response($response, $metadata);
+        ]);
     }
 }

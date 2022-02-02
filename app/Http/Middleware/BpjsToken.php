@@ -3,14 +3,13 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
-use App\Traits\BpjsResponse;
+use App\Traits\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 class BpjsToken
 {
-    use BpjsResponse;
+    use ApiResponse;
     /**
      * Handle an incoming request.
      *
@@ -21,17 +20,20 @@ class BpjsToken
     public function handle(Request $request, Closure $next)
     {
         $username = $request->header('x-username');
-        $token = $request->header('x-token');
+        $reqToken = $request->header('x-token');
 
-        if (!User::where(['username' => $username, 'token' => $token])->count()) {
-            $response = [];
-            $metadata = [
-                'message' => 'Akun tidak terdaftar',
+        $timeToken = User::where(['username' => $username])->value("token_updated");
+        $key = env('HMAC_KEY', '<- [ R 4 H 4 S 1 4 ] ->');
+        $hash = hash_hmac('sha256', $username . $timeToken, $key, true);
+        $token = base64_encode($hash);
+
+        if ($token !== $reqToken) {
+            return $this->bpjsResponse([], [
+                'message' => 'Token expired',
                 'code' => 201,
-            ];
-            return $this->response($response, $metadata);
+            ]);
         }
-        User::where('username', $username)->update(['ip' => $request->ip, 'last_activity' => Carbon::now()]);
+
         return $next($request);
     }
 }

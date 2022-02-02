@@ -18,10 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('token')->nullable();
             $table->timestamp('token_updated')->nullable();
-            $table->string('ip')->nullable();
-            $table->timestamp('last_activity')->nullable();
             $table->timestamps();
         });
     }
